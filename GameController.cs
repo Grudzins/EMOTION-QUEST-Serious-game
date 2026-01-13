@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using EmotionQuest.Models;
 using EmotionQuest.Services;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace EmotionQuest.Logic
 {
@@ -22,13 +24,14 @@ namespace EmotionQuest.Logic
             Mechanics = new Mechanics();
             Storage = new StorageService();
 
-            _stimuli = LoadDemoStimuli();
+            _stimuli = LoadStimuliFromJson() ?? LoadDemoStimuli();
+            ShuffleDeck();
             NextRound();
         }
 
         private List<Stimulus> LoadDemoStimuli()
         {
-            // Na Etap 3 wystarczy hard-code. Później możesz wczytać z stimuli.json.
+            // 
             return new List<Stimulus>
             {
                 new Stimulus
@@ -54,30 +57,87 @@ namespace EmotionQuest.Logic
 
         public void NextRound()
         {
-            if (_stimuli.Count == 0) return;
+            if (State.IsFinished)
+                return;
 
-            CurrentStimulus = _stimuli[_rnd.Next(_stimuli.Count)];
+            if (_deck == null || _deck.Count == 0)
+                return;
+
+           
+            if (_deckIndex >= _deck.Count)
+            {
+                ShuffleDeck();
+            }
+
+            CurrentStimulus = _deck[_deckIndex];
+            _deckIndex++;
         }
 
-        // !!! Ta metoda jest na Slajdzie 6 (fragment kodu)
+        
         public bool ProcessUserChoice(string emotion, int reactionTimeMs)
         {
-            // 1. Ocena odpowiedzi
-            bool correct = Mechanics.Evaluate(CurrentStimulus, emotion);
+            if (State.IsFinished)
+                return false;
 
-            // 2. Aktualizacja stanu gry
+            bool correct = Mechanics.Evaluate(CurrentStimulus, emotion);
             State.Update(correct);
 
-            // 3. Zapis postępu (JSON)
             Storage.SaveProgress(State);
-
-            // 4. Zapis metryk rundy (CSV)
             Storage.AppendMetrics(CurrentStimulus, emotion, correct, reactionTimeMs, State.Difficulty);
 
-            // 5. Dostosowanie trudności (DDA)
             Mechanics.AdjustDifficulty(State);
 
             return correct;
+        }
+
+        public void ResetGame()
+        {
+            State.Reset();
+            ShuffleDeck();
+            NextRound();
+            Storage.SaveProgress(State);
+        }
+        private List<Stimulus> LoadStimuliFromJson()
+        {
+            try
+            {
+                
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "stimuli.json");
+
+                if (!File.Exists(path))
+                    return null;
+
+                string json = File.ReadAllText(path);
+                var list = JsonConvert.DeserializeObject<List<Stimulus>>(json);
+
+                if (list == null || list.Count == 0)
+                    return null;
+
+                return list;
+            }
+            catch
+            {
+               
+                return null;
+            }
+        }
+        
+        private List<Stimulus> _deck;
+        private int _deckIndex;
+        private void ShuffleDeck()
+        {
+            _deck = new List<Stimulus>(_stimuli);
+
+           
+            for (int i = _deck.Count - 1; i > 0; i--)
+            {
+                int j = _rnd.Next(i + 1);
+                var temp = _deck[i];
+                _deck[i] = _deck[j];
+                _deck[j] = temp;
+            }
+
+            _deckIndex = 0;
         }
     }
 }
