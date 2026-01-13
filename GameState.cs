@@ -32,5 +32,20 @@ namespace EmotionQuest.Models
         {
             Difficulty = difficulty;
         }
+        
+        public const int MaxRounds = 10;
+
+        public bool IsFinished
+        {
+            get { return RoundsPlayed >= MaxRounds; }
+        }
+
+        public void Reset()
+        {
+            Score = 0;
+            RoundsPlayed = 0;
+            CorrectAnswers = 0;
+            Difficulty = "Łatwy";
+        }
     }
 }
