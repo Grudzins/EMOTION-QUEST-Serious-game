@@ -12,11 +12,11 @@ namespace EmotionQuest.Logic
                 System.StringComparison.OrdinalIgnoreCase);
         }
 
-        // Proste DDA – wystarczy na Etap 3
+        
         public void AdjustDifficulty(GameState state)
         {
             if (state.RoundsPlayed < 5)
-                return; // za mało danych
+                return; 
 
             if (state.Accuracy >= 0.8)
                 state.SetDifficulty("Średni");
@@ -26,4 +26,4 @@ namespace EmotionQuest.Logic
                 state.SetDifficulty("Średni");
         }
     }
-}//Here will be the code
+}
