@@ -1,0 +1,52 @@
+[
+	{
+		"Id": "1",
+		"Description": "Kolega niespodziewanie kupił Ci kawę dokładnie taką, jak lubisz.",
+		"CorrectEmotion": "Radość"
+	},
+	{
+		"Id": "2",
+		"Description": "Przyjaciel odwołuje spotkanie w ostatniej chwili ze względu na jego chorobę.",
+		"CorrectEmotion": "Smutek"
+	},
+	{
+		"Id": "3",
+		"Description": "Słyszysz głośny huk za plecami i nie wiesz, co się stało.",
+		"CorrectEmotion": "Strach"
+	},
+	{
+		"Id": "4",
+		"Description": "Ktoś wchodzi Ci w słowo i ignoruje Twoje zdanie podczas rozmowy.",
+		"CorrectEmotion": "Złość"
+	},
+	{
+		"Id": "5",
+		"Description": "Dowiadujesz się, że egzamin został przeniesiony na późniejszy termin, a się do niego nie przygotowywałeś.",
+		"CorrectEmotion": "Spokój"
+	},
+	{
+		"Id": "6",
+		"Description": "Otrzymujesz pochwałę od prowadzącego za dobrze wykonany projekt.",
+		"CorrectEmotion": "Radość"
+	},
+	{
+		"Id": "7",
+		"Description": "Bliska osoba nie odpisuje na Twoją wiadomość od kilku godzin, a miała się z tobą skontaktować.",
+		"CorrectEmotion": "Strach"
+	},
+	{
+		"Id": "8",
+		"Description": "Dowiadujesz się, że popełniłeś błąd w ważnym zadaniu.",
+		"CorrectEmotion": "Złość"
+	},
+	{
+		"Id": "9",
+		"Description": "Musisz publicznie zaprezentować projekt przed całą grupą.",
+		"CorrectEmotion": "Strach"
+	},
+	{
+		"Id": "10",
+		"Description": "Po długim i stresującym dniu możesz wreszcie odpocząć w domu.",
+		"CorrectEmotion": "Spokój"
+	}
+]
